@@ -1,21 +1,17 @@
-const dotenv = require("dotenv");
 const express = require("express");
-const { createServer } = require("http");
+const dotenv = require("dotenv");
+const cors = require("cors");
 const connectDB = require("./config/db");
-
+const { createServer } = require("http");
+const app = require("./app");
 
 dotenv.config();
-console.log("🔍 Loaded MONGODB_URI:", process.env.MONGODB_URI);
 connectDB();
-const app = express();
-app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
 const server = createServer(app);
 
+app.use(cors());
+app.use(express.json());
+
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () =>
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
-);
+server.listen(PORT);
